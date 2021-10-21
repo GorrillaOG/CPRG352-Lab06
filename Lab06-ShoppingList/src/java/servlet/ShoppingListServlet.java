@@ -30,16 +30,16 @@ public class ShoppingListServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("username");
 //System.out.println(username);
-        if (username != null ) {
+        if (username != null) {
 
             if (request.getParameter("action") != null && request.getParameter("action").equals("out")) {
 
                 request.getSession().invalidate();
 
                 getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
-                
+
                 return;
-            } else  {
+            } else {
                 getServletContext().getRequestDispatcher("/WEB-INF/shoppingList.jsp").forward(request, response);
                 return;
 
@@ -53,31 +53,31 @@ public class ShoppingListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
- 
+
         HttpSession session = request.getSession();
         String action = request.getParameter("action");
         //
+
+        if (action.equals("register")) {
+            String username = request.getParameter("username");
+
+            if (username == null && username.isEmpty()) {
+
+                getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+
+                return;
+            } else {
+                session.setAttribute("username", username);
+                request.setAttribute("username", username);
+                getServletContext().getRequestDispatcher("/WEB-INF/shoppingList.jsp").forward(request, response);
+
+                return;
+
+            }
+
         
-        if (action.equals("register") ){  
-             String username = request.getParameter("username");
-            
-             if ( username == null && username.isEmpty()){
-            
-           getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
-
-            return;
-             }else {
-                  session.setAttribute("username", username);
-           request.setAttribute("username", username);
-            getServletContext().getRequestDispatcher("/WEB-INF/shoppingList.jsp").forward(request, response);
-
-            return;
-                
-                    }
-    
-        }
-        if (action.equals("add")) {
-         session = request.getSession();
+        }  else if(action.equals("add")) {
+            session = request.getSession();
             String add = (String) request.getParameter("item");
             ArrayList<String> item = (ArrayList) session.getAttribute("item");
             if (item == null) {
@@ -91,7 +91,7 @@ public class ShoppingListServlet extends HttpServlet {
 
         } else if (action.equals("delete")) {
             String delete = request.getParameter("item");
-          session = request.getSession();
+            session = request.getSession();
             ArrayList<String> list = (ArrayList) session.getAttribute("item");
             if (list != null) {
                 for (int i = 0; i < list.size(); i++) {
