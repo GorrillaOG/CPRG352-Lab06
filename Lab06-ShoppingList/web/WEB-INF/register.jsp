@@ -19,7 +19,7 @@
         <form method="POST" action="ShoppingList">
             <label>Username: </label>
             <input type="text"  name="username" >
-            <input type="submit"   value="Log in">
+            <input type="submit"   value="register">
             <input type ="hidden" name="action" value="register">
         </form>
            
